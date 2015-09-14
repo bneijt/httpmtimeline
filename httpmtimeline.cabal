@@ -1,0 +1,34 @@
+Name:           httpmtimeline
+Version:        0.1
+Synopsis:       Snap server hosting images and their mtime
+Description:    Snap server to host camera snapshots, ordered
+                by their modification time.
+License:        AllRightsReserved
+Author:         Author
+Maintainer:     maintainer@example.com
+Stability:      Experimental
+Category:       Web
+Build-type:     Simple
+Cabal-version:  >=1.2
+
+Executable httpmtimeline
+  hs-source-dirs: src
+  main-is: Main.hs
+
+  Build-depends:
+    base                      >= 4     && < 5,
+    bytestring                >= 0.9.1 && < 0.11,
+    MonadCatchIO-transformers >= 0.2.1 && < 0.4,
+    mtl                       >= 2     && < 3,
+    snap-core                 >= 0.9   && < 0.10,
+    snap-server               >= 0.9   && < 0.10,
+    snap-extras,
+    filemanip,
+    transformers,
+    unix
+
+  if impl(ghc >= 6.12.0)
+    ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
+                 -fno-warn-unused-do-bind
+  else
+    ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
