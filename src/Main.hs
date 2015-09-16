@@ -14,22 +14,22 @@ import System.FilePath.Find (find, extension, always, (==?), (||?))
 imageHostingBasePath :: FilePath
 imageHostingBasePath = "images/"
 
-getMTimeInteger :: FilePath -> IO Integer
+getMTimeInteger :: FilePath -> IO Int
 getMTimeInteger filepath = do
     status <- getFileStatus filepath
     let mtime = modificationTime status
-    return ((read . show) mtime :: Integer)
+    return (fromEnum mtime)
 
 --Remove basepath from filenames
 dropBasepath :: FilePath -> [FilePath] -> [FilePath]
 dropBasepath basepath filenames = map (\x -> drop (length basepath) x) filenames
 
-mtimeFilenameTuplesOf :: [FilePath] -> FilePath -> IO [(Integer, FilePath)]
+mtimeFilenameTuplesOf :: [FilePath] -> FilePath -> IO [(Int, FilePath)]
 mtimeFilenameTuplesOf filenames basepath = do
     mtimes <- mapM getMTimeInteger filenames
     return $ zip mtimes (dropBasepath basepath filenames)
 
-listImagesWithCtime :: IO [(Integer, FilePath)]
+listImagesWithCtime :: IO [(Int, FilePath)]
 listImagesWithCtime = do
     files <- find always (extension ==? ".jpg" ||? extension ==? ".png") imageHostingBasePath
     mtimeFilenameTuplesOf files imageHostingBasePath
@@ -47,4 +47,4 @@ site =
 imageIndexHandler :: Snap ()
 imageIndexHandler = do
         listing <- liftIO listImagesWithCtime
-        writeJSON (listing :: [(Integer, FilePath)])
+        writeJSON (listing :: [(Int, FilePath)])
