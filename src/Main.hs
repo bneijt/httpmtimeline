@@ -6,10 +6,21 @@ import Control.Applicative
 import Snap.Core
 import Snap.Util.FileServe
 import Snap.Http.Server
-import Snap.Extras.JSON
 import Control.Monad.IO.Class (liftIO)
 import System.Posix.Files
 import System.FilePath.Find (find, extension, always, (==?), (||?))
+import Data.Aeson
+
+-- | Set MIME to 'application/json' and write given object into
+-- 'Response' body.
+writeJSON :: (MonadSnap m, ToJSON a) => a -> m ()
+writeJSON a = do
+  jsonResponse
+  writeLBS . encode $ a
+
+-- | Mark response as 'application/json'
+jsonResponse :: MonadSnap m => m ()
+jsonResponse = modifyResponse $ setHeader "Content-Type" "application/json"
 
 imageHostingBasePath :: FilePath
 imageHostingBasePath = "images/"

@@ -1,11 +1,11 @@
 Name:           httpmtimeline
 Version:        0.1
 Synopsis:       Snap server hosting images and their mtime
-Description:    Snap server to host camera snapshots, ordered
+Description:    Snap server to host images ordered
                 by their modification time.
 License:        GPL-3
-Author:         Author
-Maintainer:     maintainer@example.com
+Author:         Bram Neijt
+Maintainer:     bneijt@gmail.com
 Stability:      Experimental
 Category:       Web
 Build-type:     Simple
@@ -28,7 +28,7 @@ Executable httpmtimeline
     mtl                       >= 2     && < 3,
     snap-core                 >= 0.9   && < 0.10,
     snap-server               >= 0.9   && < 0.10,
-    snap-extras,
+    aeson,
     filemanip,
     transformers,
     unix
